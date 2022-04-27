@@ -10,6 +10,13 @@ import term.*;
 public class BeispielProgramme {
     public static void main(String[] args) {
         //i)
+        kleinerAls();
+
+        //interpretation.setRelation("relation", )
+        //ii)
+    }
+
+    private static void kleinerAls() {
         InterRelation relation = werte -> {
             boolean lol = false;
             if(werte[0].getTyp() != VarTyp.INT || werte[1].getTyp() != VarTyp.INT){
@@ -47,9 +54,5 @@ public class BeispielProgramme {
 
         System.out.println(undTrue.evaluieren(interpretation));
         System.out.println(undFalse.evaluieren(interpretation));
-
-        //interpretation.setRelation("relation", )
-        //ii)
-
     }
 }
