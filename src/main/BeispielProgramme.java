@@ -1,7 +1,6 @@
 package main;
 
 import aussagenlogik.Interpretation;
-import aussagenlogik.Typ;
 import aussagenlogik.Und;
 import relation.InterRelation;
 import relation.Relation;
@@ -44,12 +43,12 @@ public class BeispielProgramme {
 
         Interpretation interpretation = new Interpretation();
         interpretation.setRelation("KleinerAls", relation);
-        interpretation.setVariable(x);
-        interpretation.setVariable(y);
-        interpretation.setVariable(z);
-        interpretation.setVariable(xF);
-        interpretation.setVariable(yF);
-        interpretation.setVariable(zF);
+        interpretation.setWert(x);
+        interpretation.setWert(y);
+        interpretation.setWert(z);
+        interpretation.setWert(xF);
+        interpretation.setWert(yF);
+        interpretation.setWert(zF);
 
 
         System.out.println(undTrue.evaluieren(interpretation));

@@ -59,10 +59,23 @@ public class Exists extends Formel {
 		}
 	}
 
-	@Override
 	public boolean evaluieren(Interpretation inter) {
-	  //TODO
-    return false;
+		switch (this.getVar().getTyp()) {
+			case BOOL:
+				inter.setWert(new Wert(this.getVar().getName(), false));
+				if(this.getOperanden().get(0).evaluieren(inter)) return true;
+
+				inter.setWert(new Wert(this.getVar().getName(), true));
+				if(this.getOperanden().get(0).evaluieren(inter)) return true;
+				break;
+			case INT:
+				for(int i = -1000; i < 1000; i++) {
+					inter.setWert(new Wert(this.getVar().getName(), i));
+					if(this.getOperanden().get(0).evaluieren(inter)) return true;
+				}
+				break;
+		}
+		return false;
 	}
 
 	@Override

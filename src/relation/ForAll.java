@@ -62,7 +62,22 @@ public class ForAll extends Formel {
 
     @Override
     public boolean evaluieren(Interpretation inter) {
-	    return false;
+        switch (this.getVar().getTyp()) {
+            case BOOL:
+                inter.setWert(new Wert(this.getVar().getName(), false));
+                if(!this.getOperanden().get(0).evaluieren(inter)) return false;
+
+                inter.setWert(new Wert(this.getVar().getName(), true));
+                if(!this.getOperanden().get(0).evaluieren(inter)) return false;
+                break;
+            case INT:
+                for(int i = -1000; i < 1000; i++) {
+                    inter.setWert(new Wert(this.getVar().getName(), i));
+                    if(!this.getOperanden().get(0).evaluieren(inter)) return false;
+                }
+                break;
+        }
+        return true;
     }
 
     @Override

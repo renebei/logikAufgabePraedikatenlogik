@@ -20,7 +20,7 @@ public class Interpretation {
         relationen = new HashMap<>();
     }
 
-    public Interpretation setVariable(Wert wert) {
+    public Interpretation setWert(Wert wert) {
         werte.put(wert.getName(), wert);
         return this;
     }
