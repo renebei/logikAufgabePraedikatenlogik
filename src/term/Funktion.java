@@ -91,12 +91,12 @@ public class Funktion extends Term {
 
 	@Override
 	public Wert evaluieren(Interpretation inter) {
-		Term[] termeArray = new Term[teilterme.size()];
+		Wert[] werteArray = new Wert[teilterme.size()];
 		for (int i = 0; i < teilterme.size(); i++) {
-			termeArray[i] =  teilterme.get(i).evaluieren(inter);
+			werteArray[i] =  teilterme.get(i).evaluieren(inter);
 		}
 
-    	return inter.getFunktion(name).berechnen(termeArray);
+    	return inter.getFunktion(name).berechnen(werteArray);
 	}
 
 	@Override

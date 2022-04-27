@@ -163,11 +163,11 @@ public class Relation extends Formel {
 
     @Override
     public boolean evaluieren(Interpretation inter) {
-    	Term[] termArr = new Term[terme.size()];
+    	Wert[] werteArray = new Wert[terme.size()];
 		for (int i = 0; i < terme.size(); i++) {
-			termArr[i] = terme.get(i).evaluieren(inter);
+            werteArray[i] = terme.get(i).evaluieren(inter);
 		}
-        return inter.getRelation(name).berechnen(termArr);
+        return inter.getRelation(name).berechnen(werteArray);
     }
 
     @Override
