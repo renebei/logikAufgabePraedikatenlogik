@@ -16,7 +16,8 @@ public class BeispielProgramme {
         //erstesBsp();
 
         //zweitesBsp();
-        beispielDrei();
+        //beispielDrei();
+        viertesBeispiel();
         //interpretation.setRelation("relation", )
         //ii)
     }
@@ -129,7 +130,7 @@ public class BeispielProgramme {
             if (werte[0].getTyp() != VarTyp.INT || werte[1].getTyp() != VarTyp.INT || werte[2].getTyp() != VarTyp.INT) {
                 throw new IllegalArgumentException("keine Integer in diesem array");
             }
-            if ((werte[0].getIntegerWert() + werte[1].getIntegerWert() + werte[2].getIntegerWert() % 2) == 0){
+            if (((werte[0].getIntegerWert() + werte[1].getIntegerWert() + werte[2].getIntegerWert()) % 2) == 0){
                 return true;
             }
             return false;
