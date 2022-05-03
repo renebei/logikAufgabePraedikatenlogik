@@ -105,6 +105,25 @@ public class Exists extends Formel {
     return "Exists [var=" + var + ", typ=" + typ + ", operanden="
         + operanden + "]";
   }
-	
 
+  /*
+	@Override
+	public Formel skolemnormalform() {
+		this.substituierenTermFuerVariable(new Wert("1",1),var);
+		return this;
+	}*/
+	public Formel skolemnormalformFirstExist(){
+		this.substituierenTermFuerVariable(new Wert("1",1),var);
+		return this.operanden.get(0);
+	}
+
+	public Formel skolemnormalformDavorForAll(Variable... variables){
+		for(Variable var: variables){
+			//hier mit funktion ersetzen
+		}
+
+		//iwie die allquantoren hier so reinpacken oder so??????????????????ß idk
+		//allquantoren gönnen sich in der oberklasse
+		return this.operanden.get(0);
+	}
 }

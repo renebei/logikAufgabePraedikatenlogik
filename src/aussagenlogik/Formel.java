@@ -293,11 +293,19 @@ public abstract class Formel implements DeepClone<Formel> {
 		}
 		return max;
 	}
-	
+
+	//angenommen: diese funktion wird am äußerten element aufgerufen
 	public Formel skolemnormalform() {
-		//TODO
+		//praenexnormalformSchritt1();
+		/*
+		if(this.typ == Typ.EXISTS){
+			substituierenTermFuerVariable(,this.var);
+		}
+*/
 		return null;
 	}
+
+
 	
 	public void addOperand(Formel f) {
 		this.operanden.add(f);

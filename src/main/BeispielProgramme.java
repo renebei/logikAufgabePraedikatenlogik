@@ -17,9 +17,9 @@ public class BeispielProgramme {
 
         //zweitesBsp();
         //beispielDrei();
+        viertesBeispiel();
         //interpretation.setRelation("relation", )
         //ii)
-        viertesBeispiel();
     }
 
     private static void erstesBsp() {
