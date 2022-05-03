@@ -107,4 +107,22 @@ public class ForAll extends Formel {
         return "ForAll [var=" + var + ", typ=" + typ + ", operanden="
                 + operanden + "]";
     }
+
+    @Override
+    public Formel skolemnormalform() {
+        if (operanden.get(0).getTyp() == Typ.FORALL && operanden.get(0).getTyp() == Typ.EXISTS) {
+            return operanden.get(0).skolemnormalformhelp(var);
+        }
+        return super.skolemnormalform();
+    }
+
+    @Override
+    public Formel skolemnormalformhelp(Variable... variables){
+        Variable variable[] = new Variable[variables.length +1];
+        for (int i = 0; i < variables.length; i++) {
+            variable[i] = variables[i];
+        }
+        variable[variables.length] = var;
+        return skolemnormalformhelp(variable);
+    }
 }

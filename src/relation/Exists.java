@@ -8,122 +8,117 @@ import java.util.Set;
 import aussagenlogik.Formel;
 import aussagenlogik.Interpretation;
 import aussagenlogik.Typ;
+import term.Funktion;
 import term.Term;
 import term.Variable;
 import term.Wert;
 
 public class Exists extends Formel {
-	private Variable var;
-	
-	public Exists(Variable var, Formel... formeln) {
-		super(formeln);
-		if(var == null) {
-			throw new IllegalArgumentException("Variable bei FORALL darf nicht null sein.");
-		}
-		this.ersetzeVariablenGleichenNamens(var);
-		this.var = var;
-		super.typ = Typ.EXISTS;
-	}
-	
-	private void ersetzeVariablenGleichenNamens(Variable var) {
-		Formel rumpf = this.operanden.get(0);
-		List<Variable> zuErsetzen = new ArrayList<>();
-		for(Variable v:rumpf.frei()) {
-			if (v != var && v.getName().equals(var.getName())) {
-				zuErsetzen.add(v);
-			}
-		}
-		for(Variable v: zuErsetzen) {
-			rumpf.substituierenTermFuerVariable(var, v);
-		}
-	}
-	
-	@Override
-	public Set<Variable> frei(){
-		Set<Variable> erg = this.operanden.get(0).frei();
-		erg.remove(this.var);
-		return erg;
-	}
-	
-	@Override
-	public List<Variable> gebunden(){
-		List<Variable> erg = this.operanden.get(0).gebunden();
-		erg.add(this.var);
-		return erg;
-	}
-	
-	@Override
-	public void substituierenTermFuerVariable(Term neu, Variable alt) {
-		if (alt != this.var) {
-			this.operanden.get(0).substituierenTermFuerVariable(neu, alt);
-		}
-	}
+    private Variable var;
 
-	public boolean evaluieren(Interpretation inter) {
-		switch (this.getVar().getTyp()) {
-			case BOOL:
-				inter.setWert(new Wert(this.getVar().getName(), false));
-				if(this.getOperanden().get(0).evaluieren(inter)) return true;
+    public Exists(Variable var, Formel... formeln) {
+        super(formeln);
+        if (var == null) {
+            throw new IllegalArgumentException("Variable bei FORALL darf nicht null sein.");
+        }
+        this.ersetzeVariablenGleichenNamens(var);
+        this.var = var;
+        super.typ = Typ.EXISTS;
+    }
 
-				inter.setWert(new Wert(this.getVar().getName(), true));
-				if(this.getOperanden().get(0).evaluieren(inter)) return true;
-				break;
-			case INT:
-				for(int i = -1000; i < 1000; i++) {
-					inter.setWert(new Wert(this.getVar().getName(), i));
-					if(this.getOperanden().get(0).evaluieren(inter)) return true;
-				}
-				break;
-		}
-		return false;
-	}
+    private void ersetzeVariablenGleichenNamens(Variable var) {
+        Formel rumpf = this.operanden.get(0);
+        List<Variable> zuErsetzen = new ArrayList<>();
+        for (Variable v : rumpf.frei()) {
+            if (v != var && v.getName().equals(var.getName())) {
+                zuErsetzen.add(v);
+            }
+        }
+        for (Variable v : zuErsetzen) {
+            rumpf.substituierenTermFuerVariable(var, v);
+        }
+    }
 
-	@Override
-	public boolean validieren(List<Formel> operanden) {
-		if (operanden == null || operanden.size() != 1) {
-			throw new IllegalArgumentException("Exists benoetigt genau eine Formel: " 
-					+ operanden);
-		}
-		return true;
-	}
+    @Override
+    public Set<Variable> frei() {
+        Set<Variable> erg = this.operanden.get(0).frei();
+        erg.remove(this.var);
+        return erg;
+    }
 
-	@Override
-	public String zeigen() {
-		return "(\u2203" + this.var.zeigen() + " " + super.operanden.get(0).zeigen() +")";
-	}
+    @Override
+    public List<Variable> gebunden() {
+        List<Variable> erg = this.operanden.get(0).gebunden();
+        erg.add(this.var);
+        return erg;
+    }
 
-	public Variable getVar() {
-		return var;
-	}
+    @Override
+    public void substituierenTermFuerVariable(Term neu, Variable alt) {
+        if (alt != this.var) {
+            this.operanden.get(0).substituierenTermFuerVariable(neu, alt);
+        }
+    }
 
-	public void setVar(Variable var) {
-		this.var = var;
-	}
+    public boolean evaluieren(Interpretation inter) {
+        switch (this.getVar().getTyp()) {
+            case BOOL:
+                inter.setWert(new Wert(this.getVar().getName(), false));
+                if (this.getOperanden().get(0).evaluieren(inter)) return true;
 
-  @Override
-  public String toString() {
-    return "Exists [var=" + var + ", typ=" + typ + ", operanden="
-        + operanden + "]";
-  }
+                inter.setWert(new Wert(this.getVar().getName(), true));
+                if (this.getOperanden().get(0).evaluieren(inter)) return true;
+                break;
+            case INT:
+                for (int i = -1000; i < 1000; i++) {
+                    inter.setWert(new Wert(this.getVar().getName(), i));
+                    if (this.getOperanden().get(0).evaluieren(inter)) return true;
+                }
+                break;
+        }
+        return false;
+    }
 
-  /*
-	@Override
-	public Formel skolemnormalform() {
-		this.substituierenTermFuerVariable(new Wert("1",1),var);
-		return this;
-	}*/
-	public Formel skolemnormalformFirstExist(){
-		this.substituierenTermFuerVariable(new Wert("1",1),var);
-		return this.operanden.get(0);
-	}
+    @Override
+    public boolean validieren(List<Formel> operanden) {
+        if (operanden == null || operanden.size() != 1) {
+            throw new IllegalArgumentException("Exists benoetigt genau eine Formel: "
+                    + operanden);
+        }
+        return true;
+    }
 
-	public Formel skolemnormalformDavorForAll(Variable... variables){
-		for(Variable var: variables){
-			//hier mit funktion ersetzen
-		}
+    @Override
+    public String zeigen() {
+        return "(\u2203" + this.var.zeigen() + " " + super.operanden.get(0).zeigen() + ")";
+    }
 
-		//iwie die allquantoren hier so reinpacken oder so??????????????????ß idk
-		//allquantoren gönnen sich in der oberklasse
-		return this.operanden.get(0);
-	}
+    public Variable getVar() {
+        return var;
+    }
+
+    public void setVar(Variable var) {
+        this.var = var;
+    }
+
+    @Override
+    public String toString() {
+        return "Exists [var=" + var + ", typ=" + typ + ", operanden="
+                + operanden + "]";
+    }
+
+    @Override
+    public Formel skolemnormalform() {
+        this.substituierenTermFuerVariable(new Wert("1", 1), var);
+        return this.operanden.get(0);
+    }
+
+    @Override
+    public Formel skolemnormalformhelp(Variable... variables) {
+        substituierenTermFuerVariable(new Funktion("fun" + this.var.getName(), var.getTyp(), variables), var);
+
+        //iwie die allquantoren hier so reinpacken oder so??????????????????ß idk
+        //allquantoren gönnen sich in der oberklasse
+        return this.operanden.get(0);
+    }
 }

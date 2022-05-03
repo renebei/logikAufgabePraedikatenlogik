@@ -297,12 +297,19 @@ public abstract class Formel implements DeepClone<Formel> {
 	//angenommen: diese funktion wird am äußerten element aufgerufen
 	public Formel skolemnormalform() {
 		//praenexnormalformSchritt1();
-		/*
-		if(this.typ == Typ.EXISTS){
-			substituierenTermFuerVariable(,this.var);
+		if (this.typ != Typ.EXISTS || this.typ != Typ.FORALL){
+			return this;
 		}
-*/
+
+		if(this.typ == Typ.EXISTS){
+
+		}
+
 		return null;
+	}
+
+	public Formel skolemnormalformhelp(Variable... variables){
+		return this;
 	}
 
 
