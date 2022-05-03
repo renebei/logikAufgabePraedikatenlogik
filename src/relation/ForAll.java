@@ -53,6 +53,7 @@ public class ForAll extends Formel {
         return erg;
     }
 
+
     @Override
     public void substituierenTermFuerVariable(Term neu, Variable alt) {
         if (alt != this.var) {
@@ -79,6 +80,16 @@ public class ForAll extends Formel {
         }
         return true;
     }
+
+    public Formel praenexnormalformSchritt1() {
+        if(operanden.get(0).variablen().contains(var)) {
+            return this;
+        }
+
+        return operanden.get(0);
+    }
+
+
 
     @Override
     public boolean validieren(List<Formel> operanden) {

@@ -10,28 +10,25 @@ import relation.InterRelation;
 import relation.Relation;
 import term.*;
 
-public class BeispielProgramme {
+public class BeispielProgramm {
     public static void main(String[] args) {
-        //i)
-        //erstesBsp();
+        erstesBsp();
+        System.out.println("--");
+        zweitesBsp();
+        System.out.println("--");
+        beispielDrei();
+        System.out.println("--");
+        //viertesBeispiel();
 
-        //zweitesBsp();
-        //beispielDrei();
-        viertesBeispiel();
-        //interpretation.setRelation("relation", )
-        //ii)
     }
 
     private static void erstesBsp() {
         InterRelation relation = werte -> {
-            boolean lol = false;
             if(werte[0].getTyp() != VarTyp.INT || werte[1].getTyp() != VarTyp.INT){
                 throw new IllegalArgumentException("keine Integer in diesem array");
             }
-
             if (werte[0].getIntegerWert() < werte[1].getIntegerWert()){
                 return true;
-
             }
             return false;
         };
@@ -77,7 +74,6 @@ public class BeispielProgramme {
         Wert y = new Wert("y", 5);
         Wert z = new Wert("z", 5);
 
-
         Und inneresUnd = new Und(new Relation("istZweite",x,z),new Relation("istZweite",y,z));
         Und auesseresUnd = new Und(new Exists(z,inneresUnd),new ForAll(x,inneresUnd),new ForAll(y,inneresUnd));
 
@@ -110,7 +106,6 @@ public class BeispielProgramme {
         Wert x = new Wert("x", 34);
         Wert y = new Wert("y", 34);
 
-
         ForAll fr = new ForAll(x, new Negation(new Und(new Relation("istGerade", new Funktion("hoch2",VarTyp.INT,x)), new Relation("istGerade", x))));
         ForAll fr2 = new ForAll(y, new Negation(new Und(new Relation("istGerade", new Funktion("hoch2Plus1",VarTyp.INT,y)), new Relation("istGerade", y))));
 
@@ -130,7 +125,7 @@ public class BeispielProgramme {
             if (werte[0].getTyp() != VarTyp.INT || werte[1].getTyp() != VarTyp.INT || werte[2].getTyp() != VarTyp.INT) {
                 throw new IllegalArgumentException("keine Integer in diesem array");
             }
-            if (((werte[0].getIntegerWert() + werte[1].getIntegerWert() + werte[2].getIntegerWert()) % 2) == 0){
+            if ((werte[0].getIntegerWert() + werte[1].getIntegerWert() + werte[2].getIntegerWert() % 2) == 0){
                 return true;
             }
             return false;

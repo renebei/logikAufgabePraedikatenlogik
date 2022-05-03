@@ -220,6 +220,7 @@ public class PraenexnormalformTest {
     Variable vw = new Variable("blubb", VarTyp.INT);
     Exists fu2 = new Exists(vw, r2.deepClone());
     Formel fu3 = new Und(fu1, fu2);
+    // ((∃b r1(f1(b, b), b2, 0) AND (∃blubb r2(f1(b, b), b2, 0))
     fu3 = fu3.praenexnormalformSchritt1();
     Assertions.assertEquals(fu3.getOperanden().get(0), fu1);
     Assertions.assertEquals(fu3.getOperanden().get(1),

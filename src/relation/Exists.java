@@ -26,6 +26,15 @@ public class Exists extends Formel {
         super.typ = Typ.EXISTS;
     }
 
+    public Formel praenexnormalformSchritt1() {
+        if(operanden.get(0).variablen().contains(var)) {
+            return this;
+        }
+
+        return operanden.get(0);
+    }
+
+
     private void ersetzeVariablenGleichenNamens(Variable var) {
         Formel rumpf = this.operanden.get(0);
         List<Variable> zuErsetzen = new ArrayList<>();
