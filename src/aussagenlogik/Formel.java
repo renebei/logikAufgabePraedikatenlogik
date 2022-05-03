@@ -265,9 +265,47 @@ public abstract class Formel implements DeepClone<Formel> {
     }
 
     public Formel praenexnormalformSchritt3() {
-        //TODO
+        Formel zwischenstand = this.deepClone();
+        boolean fertig = false;
+        while (!fertig) {
+            Formel aktuell = zwischenstand.deepClone();
 
-        return null;
+            if (aktuell.typ == Typ.NEGATION)
+                aktuell = negieren(aktuell);
+
+            for (int i = 0; i < aktuell.operanden.size(); i++)
+                aktuell.operanden.set(i, aktuell.operanden.get(i).praenexnormalformSchritt3());
+
+            if (zwischenstand.equals(aktuell))
+                fertig = true;
+            else
+                zwischenstand = aktuell;
+        }
+
+        return zwischenstand;
+    }
+
+    private Formel negieren(Formel aktuell) {
+        List<Formel> uebernehmen = new ArrayList<>();
+        for (Formel operand : aktuell.operanden.get(0).operanden)
+            uebernehmen.add(new Negation(operand));
+        Formel[] tmp = new Formel[uebernehmen.size()];
+
+        if (aktuell.operanden.get(0).typ == Typ.UND)
+            aktuell = new Oder(uebernehmen.toArray(tmp));
+        else if (aktuell.operanden.get(0).typ == Typ.ODER)
+            aktuell = new Und(uebernehmen.toArray(tmp));
+        else if (aktuell.operanden.get(0).typ == Typ.NEGATION)
+            aktuell = aktuell.operanden.get(0).operanden.get(0);
+        else if (aktuell.operanden.get(0).typ == Typ.FORALL) {
+            ForAll temp = (ForAll) aktuell.operanden.get(0);
+            aktuell = new Negation(new Exists(temp.getVar(), uebernehmen.toArray(tmp)));
+        } else if (aktuell.operanden.get(0).typ == Typ.EXISTS) {
+            Exists temp = (Exists) aktuell.operanden.get(0);
+            aktuell = new Negation(new ForAll(temp.getVar(), uebernehmen.toArray(tmp)));
+        }
+
+        return aktuell;
     }
 
 
