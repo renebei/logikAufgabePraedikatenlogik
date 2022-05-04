@@ -129,6 +129,7 @@ public class PraenexnormalformTest {
     Variable vw = new Variable(vi.getName(), VarTyp.INT);
     ForAll fu2 = new ForAll(vw, r2.deepClone());
     Formel fu3 = new Und(fu1, fu2);
+    //Evv(r1) && Avw (r2)
     fu3 = fu3.praenexnormalformSchritt2();
     Variable vvneu = ((Exists) fu3.getOperanden().get(0)).getVar();
     Variable vwneu = ((ForAll) fu3.getOperanden().get(1)).getVar();

@@ -248,31 +248,23 @@ public abstract class Formel implements DeepClone<Formel> {
     }
 
     public Formel praenexnormalformSchritt2() {
-        //die freien mit substitution ersetzen
-        //neuen allquantor machen und das ist dann die rückgabe
-        //rekursiv aufrufen
-        /*
-        Set<Variable> frei = this.frei();
-        List<Variable> gebunden = this.gebunden();
-        List<Variable> schnitt = new ArrayList<>();
+        Formel clone = this.deepClone();
+        Set<Variable> frei = clone.frei();
+        List<Variable> gebunden = clone.gebunden();
+        //Set<Variable> freiClone = new HashSet<>();
+        //List<Variable> gebundenClone = new ArrayList<>();
 
-        for (Variable v : frei) {
-            for (Variable v2 : gebunden) {
-                if(v.equals(v2)) schnitt.add(v);
-            }
-        }
-        for (Variable v:schnitt) {
-            v.setName(String.valueOf(new Random().nextInt(100000)));
-        }
-
-        return this;*/
-        Set<Variable> frei = this.frei();
-        List<Variable> gebunden = this.gebunden();
 
         for (Variable v : gebunden) {
             v.setName(String.valueOf(new Random().nextInt(10000)));
         }
-        return this;
+
+        for (Variable v: frei){
+            //Variable neuV = new Variable(String.valueOf(new Random().nextInt(10000)));
+            //freiClone.add(neuV);
+            v.setName(String.valueOf(new Random().nextInt(10000)));
+        }
+        return clone;
     }
 
     public Formel praenexnormalformSchritt3() {
