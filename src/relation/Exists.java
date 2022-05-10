@@ -127,7 +127,8 @@ public class Exists extends Formel {
 
     @Override
     public Formel skolemnormalform() {
-        this.operanden.get(0).substituierenTermFuerVariable(new Wert(String.valueOf(new Random().nextInt(10000)), 1), var);
+        int rand = new Random().nextInt(10000);
+        this.operanden.get(0).substituierenTermFuerVariable(new Wert(String.valueOf(rand),rand), var);
         return this.operanden.get(0).skolemnormalform();
     }
 
