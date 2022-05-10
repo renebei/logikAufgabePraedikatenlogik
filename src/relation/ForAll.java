@@ -2,6 +2,7 @@ package relation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import aussagenlogik.Formel;
@@ -89,6 +90,14 @@ public class ForAll extends Formel {
         return operanden.get(0);
     }
 
+    @Override
+    public Formel praenexnormalformSchritt2(){
+        Variable vneu = new Variable(String.valueOf(new Random().nextInt(10000)));
+        this.operanden.get(0).substituierenTermFuerVariable(vneu,var);
+        this.var = vneu;
+        this.operanden.set(0,this.operanden.get(0).praenexnormalformSchritt2());
+        return this;
+    }
 
 
     @Override
@@ -119,12 +128,14 @@ public class ForAll extends Formel {
                 + operanden + "]";
     }
 
+
     @Override
     public Formel skolemnormalform() {
-        if (operanden.get(0).getTyp() == Typ.FORALL && operanden.get(0).getTyp() == Typ.EXISTS) {
+        if (operanden.get(0).getTyp() == Typ.FORALL || operanden.get(0).getTyp() == Typ.EXISTS) {
             return operanden.get(0).skolemnormalformhelp(var);
+        } else {
+            return this;
         }
-        return super.skolemnormalform();
     }
 
     @Override
@@ -134,6 +145,6 @@ public class ForAll extends Formel {
             variable[i] = variables[i];
         }
         variable[variables.length] = var;
-        return skolemnormalformhelp(variable);
+        return operanden.get(0).skolemnormalformhelp(variable);
     }
 }

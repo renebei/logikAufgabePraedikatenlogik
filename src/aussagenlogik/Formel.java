@@ -247,6 +247,8 @@ public abstract class Formel implements DeepClone<Formel> {
         return id++;
     }
 
+
+    /*
     public Formel praenexnormalformSchritt2() {
         Formel clone = this.deepClone();
         Set<Variable> frei = clone.frei();
@@ -265,7 +267,17 @@ public abstract class Formel implements DeepClone<Formel> {
             v.setName(String.valueOf(new Random().nextInt(10000)));
         }
         return clone;
+    }*/
+
+    public Formel praenexnormalformSchritt2(){
+        if(this.typ != Typ.RELATION){
+            for (int i = 0; i < operanden.size(); i++){
+                operanden.set(i,operanden.get(i).praenexnormalformSchritt2());
+            }
+        }
+        return this;
     }
+
 
     public Formel praenexnormalformSchritt3() {
         Formel zwischenstand = this.deepClone();
@@ -415,19 +427,23 @@ public abstract class Formel implements DeepClone<Formel> {
         return max;
     }
 
+
     //angenommen: diese funktion wird am äußerten element aufgerufen
     public Formel skolemnormalform() {
-        //praenexnormalformSchritt1();
+        /*
         if (this.typ != Typ.EXISTS || this.typ != Typ.FORALL) {
-            return this;
-        }
-
-        if (this.typ == Typ.EXISTS) {
-
-        }
-
-        return null;
+            for (Formel f : operanden) {
+                f.skolemnormalform();
+            }
+        }*/
+        return this;
     }
+/*
+    //angenommen: diese funktion wird am äußerten element aufgerufen
+    //jeder hat nur einen operanden!
+    public Formel skolemnormalform() {
+        return this;
+    }*/
 
     public Formel skolemnormalformhelp(Variable... variables) {
         return this;

@@ -1,9 +1,6 @@
 package relation;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import aussagenlogik.Formel;
 import aussagenlogik.Interpretation;
@@ -98,6 +95,15 @@ public class Exists extends Formel {
     }
 
     @Override
+    public Formel praenexnormalformSchritt2(){
+        Variable vneu = new Variable(String.valueOf(new Random().nextInt(10000)));
+        this.operanden.get(0).substituierenTermFuerVariable(vneu,var);
+        this.var = vneu;
+        this.operanden.set(0,this.operanden.get(0).praenexnormalformSchritt2());
+        return this;
+    }
+
+    @Override
     public String zeigen() {
         return "(\u2203" + this.var.zeigen() + " " + super.operanden.get(0).zeigen() + ")";
     }
@@ -116,10 +122,13 @@ public class Exists extends Formel {
                 + operanden + "]";
     }
 
+
+
+
     @Override
     public Formel skolemnormalform() {
-        this.substituierenTermFuerVariable(new Wert("1", 1), var);
-        return this.operanden.get(0);
+        this.operanden.get(0).substituierenTermFuerVariable(new Wert("1", 1), var);
+        return this.operanden.get(0).skolemnormalform();
     }
 
     @Override
