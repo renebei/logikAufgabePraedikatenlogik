@@ -259,7 +259,7 @@ public abstract class Formel implements DeepClone<Formel> {
             v.setName(String.valueOf(new Random().nextInt(10000)));
         }
 
-        for (Variable v: frei){
+        for (Variable v : frei) {
             //Variable neuV = new Variable(String.valueOf(new Random().nextInt(10000)));
             //freiClone.add(neuV);
             v.setName(String.valueOf(new Random().nextInt(10000)));
@@ -272,13 +272,10 @@ public abstract class Formel implements DeepClone<Formel> {
         boolean fertig = false;
         while (!fertig) {
             Formel aktuell = zwischenstand.deepClone();
-
             if (aktuell.typ == Typ.NEGATION)
                 aktuell = negieren(aktuell);
-
             for (int i = 0; i < aktuell.operanden.size(); i++)
                 aktuell.operanden.set(i, aktuell.operanden.get(i).praenexnormalformSchritt3());
-
             if (zwischenstand.equals(aktuell))
                 fertig = true;
             else
@@ -302,20 +299,78 @@ public abstract class Formel implements DeepClone<Formel> {
             aktuell = aktuell.operanden.get(0).operanden.get(0);
         else if (aktuell.operanden.get(0).typ == Typ.FORALL) {
             ForAll temp = (ForAll) aktuell.operanden.get(0);
-            aktuell = new Negation(new Exists(temp.getVar(), uebernehmen.toArray(tmp)));
+            aktuell = new Exists(temp.getVar(), uebernehmen.toArray(tmp));
         } else if (aktuell.operanden.get(0).typ == Typ.EXISTS) {
             Exists temp = (Exists) aktuell.operanden.get(0);
-            aktuell = new Negation(new ForAll(temp.getVar(), uebernehmen.toArray(tmp)));
+            aktuell = new ForAll(temp.getVar(), uebernehmen.toArray(tmp));
         }
-
         return aktuell;
     }
 
 
     public Formel praenexnormalformSchritt4() {
-        //TODO
+        Formel erg = this;
+        Boolean fix = true;
+        while (fix) {
+            Formel tmp = schritt4(erg);
+            if (!tmp.equals(erg)) {
+                fix = true;
+                erg = tmp;
+            } else {
+                fix = false;
+            }
+        }
+        return erg;
+    }
 
-        return null;
+    private Formel schritt4(Formel form) {
+        Formel formel = form.deepClone();
+        if (formel.typ == Typ.UND || formel.typ == Typ.ODER || formel.typ == Typ.NEGATION) {
+            for (int i = 0; i < formel.operanden.size(); i++) {
+                Formel operand = formel.operanden.get(i);
+                if (formel.schritt4machbar(operand)) {
+                    if (operand.typ == Typ.EXISTS) {
+                        Exists ex = (Exists) operand;
+                        formel.operanden.set(i, operand.operanden.get(0));
+                        formel = new Exists(ex.getVar(), formel);
+                    } else {
+                        ForAll fa = (ForAll) operand;
+                        formel.operanden.set(i, operand.operanden.get(0));
+                        formel = new ForAll(fa.getVar(), formel);
+                    }
+                    return formel;
+                }
+            }
+        }
+        for (int i = 0; i < formel.operanden.size(); i++) {
+            formel.operanden.set(i, schritt4(formel.operanden.get(i)));
+
+        }
+        return formel;
+    }
+
+    private Boolean schritt4machbar(Formel operand) {
+        Variable var;
+        switch (operand.typ) {
+            case EXISTS:
+                Exists ex = (Exists) operand;
+                var = ex.getVar();
+                break;
+            case FORALL:
+                ForAll fa = (ForAll) operand;
+                var = fa.getVar();
+                break;
+            default:
+                return false;
+        }
+        for (Formel andererOperand : this.operanden) {
+            if (operand != andererOperand) {
+                if (andererOperand.gebunden().contains(var)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public List<String> funktionsnamen() {
