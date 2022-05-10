@@ -37,8 +37,11 @@ public class SkolemnormalformTest {
 		Formel fu1 = new Exists(vi, new Relation("rel", vi, vi2, u, v, w, x, y));
 		Formel fu2 = new ForAll(vi2, new Exists(w, new Exists(u, new ForAll(v, fu1))));
 		Formel fu3 = new Exists(y,new ForAll(x, fu2));
+		System.out.print("fu3");
+		System.out.println(fu3.zeigen());
+
 		Formel fu4 = fu3.skolemnormalform();
-		System.out.println(fu4.toString());
+		System.out.println(fu4.zeigen());
 		// erwartet: (∀x (∀b2 (∀v rel(funb4(x, b2, v), b2, funu3(x, b2), v, funw2(x, b2), x, 1))))
 		Assertions.assertEquals(Typ.FORALL, fu4.getTyp());
 		Assertions.assertEquals(Typ.FORALL, fu4.erste().getTyp());

@@ -132,10 +132,9 @@ public class ForAll extends Formel {
     @Override
     public Formel skolemnormalform() {
         if (operanden.get(0).getTyp() == Typ.FORALL || operanden.get(0).getTyp() == Typ.EXISTS) {
-            return operanden.get(0).skolemnormalformhelp(var);
-        } else {
-            return this;
+            operanden.set(0,operanden.get(0).skolemnormalformhelp(var));
         }
+        return this;
     }
 
     @Override

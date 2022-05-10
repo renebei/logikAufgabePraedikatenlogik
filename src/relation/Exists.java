@@ -127,16 +127,16 @@ public class Exists extends Formel {
 
     @Override
     public Formel skolemnormalform() {
-        this.operanden.get(0).substituierenTermFuerVariable(new Wert("1", 1), var);
+        this.operanden.get(0).substituierenTermFuerVariable(new Wert(String.valueOf(new Random().nextInt(10000)), 1), var);
         return this.operanden.get(0).skolemnormalform();
     }
 
     @Override
     public Formel skolemnormalformhelp(Variable... variables) {
-        substituierenTermFuerVariable(new Funktion("fun" + this.var.getName(), var.getTyp(), variables), var);
+        this.operanden.get(0).substituierenTermFuerVariable(new Funktion("fun" + this.var.getName(), var.getTyp(), variables), var);
 
         //iwie die allquantoren hier so reinpacken oder so??????????????????ß idk
         //allquantoren gönnen sich in der oberklasse
-        return this.operanden.get(0);
+        return this.operanden.get(0).skolemnormalform();
     }
 }
