@@ -12,6 +12,7 @@ import term.*;
 
 public class BeispielProgramm {
     public static void main(String[] args) {
+        //assert(false);
         erstesBsp();
         System.out.println("--");
         zweitesBsp();

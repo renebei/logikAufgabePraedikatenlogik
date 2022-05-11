@@ -138,6 +138,11 @@ public class Exists extends Formel {
 
         //iwie die allquantoren hier so reinpacken oder so??????????????????ß idk
         //allquantoren gönnen sich in der oberklasse
-        return this.operanden.get(0).skolemnormalform();
+        return this.operanden.get(0).skolemnormalformhelp(variables);
+    }
+
+    @Override
+    public Formel cleanUpExists() {
+        return operanden.get(0);
     }
 }

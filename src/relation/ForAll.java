@@ -136,6 +136,7 @@ public class ForAll extends Formel {
         } else if(operanden.get(0).getTyp() == Typ.FORALL){
             operanden.get(0).skolemnormalformhelp(var);
         }
+        cleanUpExists();
         return this;
     }
 
@@ -147,5 +148,19 @@ public class ForAll extends Formel {
         }
         variable[variables.length] = var;
         return operanden.get(0).skolemnormalformhelp(variable);
+    }
+
+    @Override
+    public Formel cleanUpExists() {
+        //alle exists rechts von unserer formel löschen
+        //cleanUpExists in Exists.java gibt den operanden.get(0) von sich selbst
+        while(this.operanden.get(0).getTyp() == Typ.EXISTS){
+            this.operanden.set(0,this.operanden.get(0).cleanUpExists());
+        }
+        //wenn keine Exists mehr vorhanden, dann dasselbe
+        if(this.operanden.get(0).getTyp() == Typ.FORALL){
+            this.operanden.get(0).cleanUpExists();
+        }
+        return this;
     }
 }

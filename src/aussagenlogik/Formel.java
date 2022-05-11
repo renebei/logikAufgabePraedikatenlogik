@@ -449,6 +449,10 @@ public abstract class Formel implements DeepClone<Formel> {
         return this;
     }
 
+    public Formel cleanUpExists(){
+        return this;
+    }
+
 
     public void addOperand(Formel f) {
         this.operanden.add(f);
